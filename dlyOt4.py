@@ -1,4 +1,3 @@
-#import os
 import queue as q
 
 #Считываем ввод
@@ -12,7 +11,6 @@ for i in file:
         else:
             inp += ' '
 inp += ' '
-#print(inp)
 
 file.close()
 
@@ -27,7 +25,6 @@ for i in inp:
         tmp += i
     else:
         tmp = int(tmp)
-        #print(tmp)
         if (counter == 0): #Тот случай когда в tmp лежит кол-во связей
             mas = [[0 for id1 in range(2)] for id2 in range(tmp)]
             svNumber = tmp
@@ -40,14 +37,12 @@ for i in inp:
                 mas[svNumber - counter][1] = tmp
                 flag = True
                 counter -= 1
-                #print(mas)
+                
         tmp = ''
         
         if (counter == 0):
-            #print(mas)
             
             uzNumber = max(max(i) for i in mas) + 1 # Считаем колличество узлов
-            #print(uzNumber)
 
             #Находим результат (двумерный массив кол-ва путей)
             rez = [[0 for id1 in range(uzNumber)] for id2 in range(uzNumber)]
@@ -60,13 +55,6 @@ for i in inp:
                         rez[i[1]][i[1]] = -1
                         rez[i[0]][i[1]] = -1
                         rez[i[1]][i[0]] = -1
-            '''
-            for i in rez:
-                for j in i:
-                    print(j, end = ' ')
-                print()
-            print()
-            '''
             
             flag2 = True #Флаг отвечающий за то что мы не закончили начальную обработку результата
             while (flag2):
@@ -74,33 +62,21 @@ for i in inp:
                 for i in mas:
                     for j in range(uzNumber):
                         for k in range(uzNumber):
-                            #print (j, k, i[0], i[1])
                             if (rez[j][k] == -1 and i[1] == j and rez[i[0]][k] != -1):
                                 rez[i[0]][k] = -1
                                 flag2 =True
-                                #print('here')
                             
                             if (rez[i[0]][i[0]] == -1 and i[0] == j and i[1] == k and rez[j][k] != -1):
                                 rez[j][k] = -1
                                 flag2 =True
-                                #print('here2')
-            '''                
-            for i in rez:
-                for j in i:
-                    print(j, end = ' ')
-                print()
-            print()
-            '''
             
             #Заполняем результат построчно с помощью алгоритма A*
             for k in range(uzNumber):
-                #if (rez[k][0] != -1): #Проверка на то что из узла k нельзя попасть в цикл
                 frontier = q.Queue() #Создаём очередь типа FIFO для хранения текущих узлов
                 frontier.put(k) #Начинам с узла, номер которого соответствует номеру текущей строки в результате
 
                 while (not frontier.empty()):
                     current = frontier.get()
-                    #print(current)
                      
                     for i in range (len(mas)):
                         if (mas[i][0] == current):
@@ -118,5 +94,3 @@ for i in inp:
 
             cityCounter += 1
             mas = []
-    
-#os.system('PAUSE')
